@@ -78,6 +78,15 @@
       word-break: break-word;
     }
 
+    video {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      margin-top: 15px;
+      border-radius: 8px;
+      background: #000;
+    }
+
     .small {
       font-size: 0.9em;
       color: #555;
@@ -94,7 +103,7 @@
     </p>
 
     <div class="warning">
-      This page does not access passwords, private files, camera, microphone, contacts, or exact GPS location unless the visitor gives browser permission.
+      This page does not access passwords, private files, contacts, camera, microphone, clipboard, or exact GPS location unless the visitor gives browser permission.
     </div>
 
     <h2>IP and Approximate Location</h2>
@@ -176,6 +185,25 @@
     <div class="item"><span class="label">GPS Latitude:</span> <span id="gpsLatitude">Not requested</span></div>
     <div class="item"><span class="label">GPS Longitude:</span> <span id="gpsLongitude">Not requested</span></div>
     <div class="item"><span class="label">GPS Accuracy:</span> <span id="gpsAccuracy">Not requested</span></div>
+
+    <h2>Extra Permissions</h2>
+
+    <p class="small">
+      Click this button to request extra browser permissions. The browser may ask separately for location, camera, microphone, notifications, and clipboard access.
+    </p>
+
+    <button type="button" onclick="requestExtraPermissions()">Give Extra Permissions</button>
+
+    <div class="item"><span class="label">Permission Status:</span> <span id="permissionStatus">Not requested</span></div>
+    <div class="item"><span class="label">Camera:</span> <span id="cameraStatus">Not requested</span></div>
+    <div class="item"><span class="label">Microphone:</span> <span id="microphoneStatus">Not requested</span></div>
+    <div class="item"><span class="label">Notifications:</span> <span id="notificationStatus">Not requested</span></div>
+    <div class="item"><span class="label">Clipboard Read:</span> <span id="clipboardReadStatus">Not requested</span></div>
+    <div class="item"><span class="label">Extra GPS Latitude:</span> <span id="extraGpsLatitude">Not requested</span></div>
+    <div class="item"><span class="label">Extra GPS Longitude:</span> <span id="extraGpsLongitude">Not requested</span></div>
+    <div class="item"><span class="label">Extra GPS Accuracy:</span> <span id="extraGpsAccuracy">Not requested</span></div>
+
+    <video id="cameraPreview" autoplay playsinline muted></video>
 
     <h2>Raw Information</h2>
 
@@ -472,10 +500,16 @@
           setText("gpsLongitude", position.coords.longitude);
           setText("gpsAccuracy", position.coords.accuracy + " meters");
         },
-        function() {
-          setText("gpsLatitude", "Permission denied or unavailable");
-          setText("gpsLongitude", "Permission denied or unavailable");
-          setText("gpsAccuracy", "Permission denied or unavailable");
+        function(error) {
+          let message = "Permission denied or unavailable";
+
+          if (error.code === 1) message = "Permission denied";
+          if (error.code === 2) message = "Position unavailable";
+          if (error.code === 3) message = "Request timed out";
+
+          setText("gpsLatitude", message);
+          setText("gpsLongitude", message);
+          setText("gpsAccuracy", message);
         },
         {
           enableHighAccuracy: true,
@@ -483,6 +517,163 @@
           maximumAge: 0
         }
       );
+    }
+
+    async function requestExtraPermissions() {
+      setText("permissionStatus", "Requesting extra permissions...");
+
+      await requestExtraGPS();
+      await requestCameraAndMicrophone();
+      await requestNotifications();
+      await requestClipboardRead();
+
+      setText("permissionStatus", "Finished requesting available permissions.");
+    }
+
+    function requestExtraGPS() {
+      return new Promise(function(resolve) {
+        if (!navigator.geolocation) {
+          setText("extraGpsLatitude", "Geolocation not supported");
+          setText("extraGpsLongitude", "Geolocation not supported");
+          setText("extraGpsAccuracy", "Geolocation not supported");
+          resolve();
+          return;
+        }
+
+        setText("extraGpsLatitude", "Requesting permission...");
+        setText("extraGpsLongitude", "Requesting permission...");
+        setText("extraGpsAccuracy", "Requesting permission...");
+
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            setText("extraGpsLatitude", position.coords.latitude);
+            setText("extraGpsLongitude", position.coords.longitude);
+            setText("extraGpsAccuracy", position.coords.accuracy + " meters");
+            resolve();
+          },
+          function(error) {
+            let message = "Permission denied or unavailable";
+
+            if (error.code === 1) message = "Permission denied";
+            if (error.code === 2) message = "Position unavailable";
+            if (error.code === 3) message = "Request timed out";
+
+            setText("extraGpsLatitude", message);
+            setText("extraGpsLongitude", message);
+            setText("extraGpsAccuracy", message);
+            resolve();
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+          }
+        );
+      });
+    }
+
+    async function requestCameraAndMicrophone() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setText("cameraStatus", "Camera API not supported");
+        setText("microphoneStatus", "Microphone API not supported");
+        return;
+      }
+
+      try {
+        setText("cameraStatus", "Requesting permission...");
+        setText("microphoneStatus", "Requesting permission...");
+
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true
+        });
+
+        const videoTracks = stream.getVideoTracks();
+        const audioTracks = stream.getAudioTracks();
+
+        if (videoTracks.length > 0) {
+          const videoTrack = videoTracks[0];
+          const videoSettings = videoTrack.getSettings ? videoTrack.getSettings() : {};
+
+          setText(
+            "cameraStatus",
+            "Allowed — " +
+            (videoTrack.label || "Camera detected") +
+            ", " +
+            (videoSettings.width || "unknown width") +
+            " × " +
+            (videoSettings.height || "unknown height") +
+            ", " +
+            (videoSettings.frameRate || "unknown FPS") +
+            " FPS"
+          );
+
+          const preview = document.getElementById("cameraPreview");
+
+          if (preview) {
+            preview.srcObject = stream;
+            preview.style.display = "block";
+          }
+        } else {
+          setText("cameraStatus", "No camera track detected");
+        }
+
+        if (audioTracks.length > 0) {
+          const audioTrack = audioTracks[0];
+
+          setText(
+            "microphoneStatus",
+            "Allowed — " + (audioTrack.label || "Microphone detected")
+          );
+        } else {
+          setText("microphoneStatus", "No microphone track detected");
+        }
+
+      } catch (error) {
+        setText("cameraStatus", "Permission denied or unavailable");
+        setText("microphoneStatus", "Permission denied or unavailable");
+      }
+    }
+
+    async function requestNotifications() {
+      if (!("Notification" in window)) {
+        setText("notificationStatus", "Notifications not supported");
+        return;
+      }
+
+      try {
+        const permission = await Notification.requestPermission();
+        setText("notificationStatus", permission);
+
+        if (permission === "granted") {
+          new Notification("Permission granted", {
+            body: "This website can now show browser notifications."
+          });
+        }
+      } catch (error) {
+        setText("notificationStatus", "Could not request notification permission");
+      }
+    }
+
+    async function requestClipboardRead() {
+      if (!navigator.clipboard || !navigator.clipboard.readText) {
+        setText("clipboardReadStatus", "Clipboard read not supported");
+        return;
+      }
+
+      try {
+        const text = await navigator.clipboard.readText();
+
+        if (text.length === 0) {
+          setText("clipboardReadStatus", "Allowed — clipboard is empty");
+        } else {
+          setText("clipboardReadStatus", "Allowed — clipboard text length: " + text.length + " characters");
+          collectedInfo.clipboardTextPreview = text.slice(0, 200);
+          updateRawInfo();
+        }
+      } catch (error) {
+        setText("clipboardReadStatus", "Permission denied or unavailable");
+      }
     }
 
     function copyInfo() {
@@ -510,6 +701,7 @@
       const link = document.createElement("a");
       link.href = url;
       link.download = "visitor-info.json";
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
