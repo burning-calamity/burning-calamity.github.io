@@ -1,16 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Website</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Visitor Info</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      line-height: 1.6;
+      background: #f5f5f5;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .item {
+      margin-bottom: 10px;
+    }
+
+    .label {
+      font-weight: bold;
+    }
+
+    .warning {
+      margin-top: 20px;
+      padding: 10px;
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+  </style>
 </head>
 <body>
-  <h1>My Website</h1>
-  <p>Hello from GitHub Pages.</p>
+  <div class="box">
+    <h1>Your Visitor Information</h1>
 
-  <button onclick="sayHello()">Click me</button>
+    <div class="item">
+      <span class="label">Public IP:</span>
+      <span id="ip">Loading...</span>
+    </div>
 
-  <script src="script.js"></script>
+    <div class="item">
+      <span class="label">City:</span>
+      <span id="city">Loading...</span>
+    </div>
+
+    <div class="item">
+      <span class="label">Region:</span>
+      <span id="region">Loading...</span>
+    </div>
+
+    <div class="item">
+      <span class="label">Country:</span>
+      <span id="country">Loading...</span>
+    </div>
+
+    <div class="item">
+      <span class="label">Internet Provider:</span>
+      <span id="isp">Loading...</span>
+    </div>
+
+    <div class="item">
+      <span class="label">Browser:</span>
+      <span id="browser"></span>
+    </div>
+
+    <div class="item">
+      <span class="label">Operating System:</span>
+      <span id="os"></span>
+    </div>
+
+    <div class="item">
+      <span class="label">Screen Size:</span>
+      <span id="screen"></span>
+    </div>
+
+    <div class="item">
+      <span class="label">Language:</span>
+      <span id="language"></span>
+    </div>
+
+    <div class="item">
+      <span class="label">Timezone:</span>
+      <span id="timezone"></span>
+    </div>
+
+    <div class="warning">
+      This page only displays information that your browser or public IP address already exposes to websites. It does not hack, steal, or bypass permissions.
+    </div>
+  </div>
+
+  <script>
+    function detectBrowser() {
+      const userAgent = navigator.userAgent;
+
+      if (userAgent.includes("Firefox")) return "Firefox";
+      if (userAgent.includes("Edg")) return "Microsoft Edge";
+      if (userAgent.includes("Chrome")) return "Chrome";
+      if (userAgent.includes("Safari")) return "Safari";
+      if (userAgent.includes("Opera") || userAgent.includes("OPR")) return "Opera";
+
+      return "Unknown browser";
+    }
+
+    function detectOS() {
+      const platform = navigator.platform.toLowerCase();
+      const userAgent = navigator.userAgent.toLowerCase();
+
+      if (platform.includes("win")) return "Windows";
+      if (platform.includes("mac")) return "macOS";
+      if (platform.includes("linux")) return "Linux";
+      if (userAgent.includes("android")) return "Android";
+      if (userAgent.includes("iphone") || userAgent.includes("ipad")) return "iOS";
+
+      return "Unknown operating system";
+    }
+
+    document.getElementById("browser").textContent = detectBrowser();
+    document.getElementById("os").textContent = detectOS();
+    document.getElementById("screen").textContent = `${screen.width} × ${screen.height}`;
+    document.getElementById("language").textContent = navigator.language;
+    document.getElementById("timezone").textContent =
+      Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    fetch("https://ipapi.co/json/")
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("ip").textContent = data.ip || "Unavailable";
+        document.getElementById("city").textContent = data.city || "Unavailable";
+        document.getElementById("region").textContent = data.region || "Unavailable";
+        document.getElementById("country").textContent = data.country_name || "Unavailable";
+        document.getElementById("isp").textContent = data.org || "Unavailable";
+      })
+      .catch(error => {
+        document.getElementById("ip").textContent = "Could not load";
+        document.getElementById("city").textContent = "Could not load";
+        document.getElementById("region").textContent = "Could not load";
+        document.getElementById("country").textContent = "Could not load";
+        document.getElementById("isp").textContent = "Could not load";
+      });
+  </script>
 </body>
 </html>
