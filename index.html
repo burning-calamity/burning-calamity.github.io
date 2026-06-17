@@ -2,23 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Visitor Information</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      max-width: 950px;
+      max-width: 1000px;
       margin: 40px auto;
       padding: 20px;
       line-height: 1.6;
-      background: #f5f5f5;
+      background: #f4f4f4;
       color: #222;
     }
 
-    .box {
-      background: white;
-      padding: 24px;
+    .container {
+      background: #ffffff;
+      padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
     }
 
     h1 {
@@ -26,55 +33,68 @@
     }
 
     h2 {
-      margin-top: 30px;
-      border-bottom: 1px solid #ddd;
+      margin-top: 32px;
       padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
     }
 
     .item {
       margin-bottom: 10px;
+      word-break: break-word;
     }
 
     .label {
       font-weight: bold;
     }
 
+    .warning {
+      margin: 20px 0;
+      padding: 12px;
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 4px;
+    }
+
     button {
-      padding: 10px 15px;
-      margin-top: 10px;
-      cursor: pointer;
+      padding: 10px 16px;
+      margin: 8px 8px 8px 0;
       border: none;
       border-radius: 6px;
       background: #222;
       color: white;
+      cursor: pointer;
     }
 
     button:hover {
       background: #444;
     }
 
-    .warning {
-      margin-top: 25px;
+    pre {
+      background: #eeeeee;
       padding: 12px;
-      background: #fff3cd;
-      border-left: 4px solid #ffc107;
+      border-radius: 6px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
-    pre {
-      background: #eee;
-      padding: 12px;
-      overflow-x: auto;
-      border-radius: 6px;
+    .small {
+      font-size: 0.9em;
+      color: #555;
     }
   </style>
 </head>
+
 <body>
-  <div class="box">
-    <h1>Your Visitor Information</h1>
+  <div class="container">
+    <h1>Visitor Information</h1>
+
+    <p>
+      This page shows information that your browser or public IP address exposes to websites.
+    </p>
 
     <div class="warning">
-      This page displays information that your browser or public IP address normally exposes to websites.
-      It does not access private files, passwords, camera, microphone, or exact GPS location unless you give permission.
+      This page does not access passwords, private files, camera, microphone, contacts, or exact GPS location unless the visitor gives browser permission.
     </div>
 
     <h2>IP and Approximate Location</h2>
@@ -84,111 +104,126 @@
     <div class="item"><span class="label">Region:</span> <span id="region">Loading...</span></div>
     <div class="item"><span class="label">Country:</span> <span id="country">Loading...</span></div>
     <div class="item"><span class="label">Postal Code:</span> <span id="postal">Loading...</span></div>
-    <div class="item"><span class="label">Latitude from IP:</span> <span id="ipLat">Loading...</span></div>
-    <div class="item"><span class="label">Longitude from IP:</span> <span id="ipLon">Loading...</span></div>
-    <div class="item"><span class="label">Internet Provider / Organization:</span> <span id="isp">Loading...</span></div>
+    <div class="item"><span class="label">IP Latitude:</span> <span id="ipLatitude">Loading...</span></div>
+    <div class="item"><span class="label">IP Longitude:</span> <span id="ipLongitude">Loading...</span></div>
+    <div class="item"><span class="label">ISP / Organization:</span> <span id="isp">Loading...</span></div>
     <div class="item"><span class="label">ASN:</span> <span id="asn">Loading...</span></div>
     <div class="item"><span class="label">Currency:</span> <span id="currency">Loading...</span></div>
     <div class="item"><span class="label">Calling Code:</span> <span id="callingCode">Loading...</span></div>
 
     <h2>Browser and Device</h2>
 
-    <div class="item"><span class="label">Browser:</span> <span id="browser"></span></div>
-    <div class="item"><span class="label">Operating System:</span> <span id="os"></span></div>
-    <div class="item"><span class="label">Device Type:</span> <span id="deviceType"></span></div>
-    <div class="item"><span class="label">User Agent:</span> <span id="userAgent"></span></div>
-    <div class="item"><span class="label">Platform:</span> <span id="platform"></span></div>
-    <div class="item"><span class="label">Browser Language:</span> <span id="language"></span></div>
-    <div class="item"><span class="label">All Languages:</span> <span id="languages"></span></div>
-    <div class="item"><span class="label">Cookies Enabled:</span> <span id="cookies"></span></div>
-    <div class="item"><span class="label">Java Enabled:</span> <span id="java"></span></div>
-    <div class="item"><span class="label">Do Not Track:</span> <span id="dnt"></span></div>
-    <div class="item"><span class="label">Online:</span> <span id="online"></span></div>
+    <div class="item"><span class="label">Browser:</span> <span id="browser">Loading...</span></div>
+    <div class="item"><span class="label">Operating System:</span> <span id="os">Loading...</span></div>
+    <div class="item"><span class="label">Device Type:</span> <span id="deviceType">Loading...</span></div>
+    <div class="item"><span class="label">User Agent:</span> <span id="userAgent">Loading...</span></div>
+    <div class="item"><span class="label">Platform:</span> <span id="platform">Loading...</span></div>
+    <div class="item"><span class="label">Main Language:</span> <span id="language">Loading...</span></div>
+    <div class="item"><span class="label">All Languages:</span> <span id="languages">Loading...</span></div>
+    <div class="item"><span class="label">Cookies Enabled:</span> <span id="cookies">Loading...</span></div>
+    <div class="item"><span class="label">Do Not Track:</span> <span id="doNotTrack">Loading...</span></div>
+    <div class="item"><span class="label">Online:</span> <span id="online">Loading...</span></div>
 
     <h2>Screen and Display</h2>
 
-    <div class="item"><span class="label">Screen Size:</span> <span id="screen"></span></div>
-    <div class="item"><span class="label">Available Screen Size:</span> <span id="availableScreen"></span></div>
-    <div class="item"><span class="label">Browser Window Size:</span> <span id="windowSize"></span></div>
-    <div class="item"><span class="label">Color Depth:</span> <span id="colorDepth"></span></div>
-    <div class="item"><span class="label">Pixel Depth:</span> <span id="pixelDepth"></span></div>
-    <div class="item"><span class="label">Device Pixel Ratio:</span> <span id="pixelRatio"></span></div>
-    <div class="item"><span class="label">Touch Support:</span> <span id="touch"></span></div>
+    <div class="item"><span class="label">Screen Size:</span> <span id="screenSize">Loading...</span></div>
+    <div class="item"><span class="label">Available Screen Size:</span> <span id="availableScreenSize">Loading...</span></div>
+    <div class="item"><span class="label">Browser Window Size:</span> <span id="windowSize">Loading...</span></div>
+    <div class="item"><span class="label">Color Depth:</span> <span id="colorDepth">Loading...</span></div>
+    <div class="item"><span class="label">Pixel Depth:</span> <span id="pixelDepth">Loading...</span></div>
+    <div class="item"><span class="label">Device Pixel Ratio:</span> <span id="devicePixelRatio">Loading...</span></div>
+    <div class="item"><span class="label">Touch Support:</span> <span id="touchSupport">Loading...</span></div>
 
     <h2>Time and Locale</h2>
 
-    <div class="item"><span class="label">Local Time:</span> <span id="localTime"></span></div>
-    <div class="item"><span class="label">Timezone:</span> <span id="timezone"></span></div>
-    <div class="item"><span class="label">Timezone Offset:</span> <span id="timezoneOffset"></span></div>
+    <div class="item"><span class="label">Local Time:</span> <span id="localTime">Loading...</span></div>
+    <div class="item"><span class="label">Timezone:</span> <span id="timezone">Loading...</span></div>
+    <div class="item"><span class="label">Timezone Offset:</span> <span id="timezoneOffset">Loading...</span></div>
 
     <h2>Hardware and Performance</h2>
 
-    <div class="item"><span class="label">CPU Threads:</span> <span id="cpu"></span></div>
-    <div class="item"><span class="label">Device Memory:</span> <span id="memory"></span></div>
+    <div class="item"><span class="label">CPU Threads:</span> <span id="cpuThreads">Loading...</span></div>
+    <div class="item"><span class="label">Approximate Device Memory:</span> <span id="deviceMemory">Loading...</span></div>
     <div class="item"><span class="label">Battery Level:</span> <span id="batteryLevel">Unavailable</span></div>
     <div class="item"><span class="label">Battery Charging:</span> <span id="batteryCharging">Unavailable</span></div>
 
     <h2>Network</h2>
 
     <div class="item"><span class="label">Connection Type:</span> <span id="connectionType">Unavailable</span></div>
-    <div class="item"><span class="label">Effective Connection:</span> <span id="effectiveType">Unavailable</span></div>
+    <div class="item"><span class="label">Effective Connection:</span> <span id="effectiveConnection">Unavailable</span></div>
     <div class="item"><span class="label">Downlink:</span> <span id="downlink">Unavailable</span></div>
     <div class="item"><span class="label">Round Trip Time:</span> <span id="rtt">Unavailable</span></div>
     <div class="item"><span class="label">Save Data Enabled:</span> <span id="saveData">Unavailable</span></div>
 
-    <h2>Storage and Browser Capabilities</h2>
+    <h2>Browser Capabilities</h2>
 
-    <div class="item"><span class="label">Local Storage:</span> <span id="localStorageSupport"></span></div>
-    <div class="item"><span class="label">Session Storage:</span> <span id="sessionStorageSupport"></span></div>
-    <div class="item"><span class="label">IndexedDB:</span> <span id="indexedDBSupport"></span></div>
-    <div class="item"><span class="label">Service Worker:</span> <span id="serviceWorkerSupport"></span></div>
-    <div class="item"><span class="label">WebGL:</span> <span id="webglSupport"></span></div>
+    <div class="item"><span class="label">Local Storage:</span> <span id="localStorageSupport">Loading...</span></div>
+    <div class="item"><span class="label">Session Storage:</span> <span id="sessionStorageSupport">Loading...</span></div>
+    <div class="item"><span class="label">IndexedDB:</span> <span id="indexedDBSupport">Loading...</span></div>
+    <div class="item"><span class="label">Service Worker:</span> <span id="serviceWorkerSupport">Loading...</span></div>
+    <div class="item"><span class="label">WebGL:</span> <span id="webglSupport">Loading...</span></div>
     <div class="item"><span class="label">Storage Quota:</span> <span id="storageQuota">Unavailable</span></div>
     <div class="item"><span class="label">Storage Used:</span> <span id="storageUsed">Unavailable</span></div>
 
     <h2>Optional GPS Location</h2>
 
-    <p>
+    <p class="small">
       Exact GPS location requires browser permission. The visitor must click the button and accept the permission request.
     </p>
 
-    <button onclick="getGPSLocation()">Show My GPS Location</button>
+    <button type="button" onclick="getGPSLocation()">Show My GPS Location</button>
 
-    <div class="item"><span class="label">GPS Latitude:</span> <span id="gpsLat">Not requested</span></div>
-    <div class="item"><span class="label">GPS Longitude:</span> <span id="gpsLon">Not requested</span></div>
+    <div class="item"><span class="label">GPS Latitude:</span> <span id="gpsLatitude">Not requested</span></div>
+    <div class="item"><span class="label">GPS Longitude:</span> <span id="gpsLongitude">Not requested</span></div>
     <div class="item"><span class="label">GPS Accuracy:</span> <span id="gpsAccuracy">Not requested</span></div>
 
-    <h2>Raw Summary</h2>
+    <h2>Raw Information</h2>
 
-    <button onclick="copyInfo()">Copy All Information</button>
+    <button type="button" onclick="copyInfo()">Copy All Information</button>
+    <button type="button" onclick="downloadInfo()">Download JSON</button>
+
     <pre id="rawInfo">Loading...</pre>
   </div>
 
   <script>
     const collectedInfo = {};
 
-    function setText(id, value) {
-      const element = document.getElementById(id);
-      if (element) {
-        element.textContent = value;
+    function safeValue(value) {
+      if (value === undefined || value === null || value === "") {
+        return "Unavailable";
       }
-      collectedInfo[id] = value;
+
+      return String(value);
+    }
+
+    function setText(id, value) {
+      const finalValue = safeValue(value);
+      const element = document.getElementById(id);
+
+      if (element) {
+        element.textContent = finalValue;
+      }
+
+      collectedInfo[id] = finalValue;
       updateRawInfo();
     }
 
     function updateRawInfo() {
-      document.getElementById("rawInfo").textContent =
-        JSON.stringify(collectedInfo, null, 2);
+      const raw = document.getElementById("rawInfo");
+
+      if (raw) {
+        raw.textContent = JSON.stringify(collectedInfo, null, 2);
+      }
     }
 
     function detectBrowser() {
       const ua = navigator.userAgent;
 
-      if (ua.includes("Firefox")) return "Firefox";
-      if (ua.includes("Edg")) return "Microsoft Edge";
-      if (ua.includes("OPR") || ua.includes("Opera")) return "Opera";
-      if (ua.includes("Chrome")) return "Chrome";
-      if (ua.includes("Safari")) return "Safari";
+      if (ua.includes("Edg/")) return "Microsoft Edge";
+      if (ua.includes("OPR/") || ua.includes("Opera")) return "Opera";
+      if (ua.includes("Firefox/")) return "Firefox";
+      if (ua.includes("Chrome/")) return "Chrome";
+      if (ua.includes("Safari/")) return "Safari";
 
       return "Unknown browser";
     }
@@ -209,8 +244,9 @@
     function detectDeviceType() {
       const ua = navigator.userAgent.toLowerCase();
 
-      if (/tablet|ipad/.test(ua)) return "Tablet";
+      if (/ipad|tablet/.test(ua)) return "Tablet";
       if (/mobile|iphone|android/.test(ua)) return "Phone";
+
       return "Desktop or laptop";
     }
 
@@ -218,10 +254,12 @@
       try {
         const storage = window[type];
         const testKey = "__storage_test__";
+
         storage.setItem(testKey, testKey);
         storage.removeItem(testKey);
+
         return "Available";
-      } catch (e) {
+      } catch (error) {
         return "Unavailable";
       }
     }
@@ -229,29 +267,31 @@
     function checkWebGL() {
       try {
         const canvas = document.createElement("canvas");
-        const gl =
-          canvas.getContext("webgl") ||
-          canvas.getContext("experimental-webgl");
+        const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 
         return gl ? "Supported" : "Not supported";
-      } catch (e) {
+      } catch (error) {
         return "Not supported";
       }
     }
 
     function formatBytes(bytes) {
-      if (!Number.isFinite(bytes)) return "Unavailable";
+      const number = Number(bytes);
+
+      if (!Number.isFinite(number)) {
+        return "Unavailable";
+      }
 
       const units = ["bytes", "KB", "MB", "GB", "TB"];
-      let size = bytes;
+      let size = number;
       let unitIndex = 0;
 
       while (size >= 1024 && unitIndex < units.length - 1) {
-        size /= 1024;
+        size = size / 1024;
         unitIndex++;
       }
 
-      return `${size.toFixed(2)} ${units[unitIndex]}`;
+      return size.toFixed(2) + " " + units[unitIndex];
     }
 
     function collectBasicInfo() {
@@ -259,34 +299,48 @@
       setText("os", detectOS());
       setText("deviceType", detectDeviceType());
       setText("userAgent", navigator.userAgent);
-      setText("platform", navigator.platform || "Unavailable");
-      setText("language", navigator.language || "Unavailable");
-      setText("languages", navigator.languages ? navigator.languages.join(", ") : "Unavailable");
-      setText("cookies", navigator.cookieEnabled ? "Yes" : "No");
+      setText("platform", navigator.platform);
+      setText("language", navigator.language);
 
-      if (typeof navigator.javaEnabled === "function") {
-        setText("java", navigator.javaEnabled() ? "Yes" : "No");
+      if (Array.isArray(navigator.languages)) {
+        setText("languages", navigator.languages.join(", "));
       } else {
-        setText("java", "Unavailable");
+        setText("languages", "Unavailable");
       }
 
-      setText("dnt", navigator.doNotTrack || window.doNotTrack || "Unavailable");
+      setText("cookies", navigator.cookieEnabled ? "Yes" : "No");
+      setText("doNotTrack", navigator.doNotTrack || window.doNotTrack || "Unavailable");
       setText("online", navigator.onLine ? "Yes" : "No");
 
-      setText("screen", `${screen.width} × ${screen.height}`);
-      setText("availableScreen", `${screen.availWidth} × ${screen.availHeight}`);
-      setText("windowSize", `${window.innerWidth} × ${window.innerHeight}`);
-      setText("colorDepth", `${screen.colorDepth} bits`);
-      setText("pixelDepth", `${screen.pixelDepth} bits`);
-      setText("pixelRatio", window.devicePixelRatio || "Unavailable");
-      setText("touch", navigator.maxTouchPoints > 0 ? `Yes, ${navigator.maxTouchPoints} touch points` : "No");
+      setText("screenSize", screen.width + " × " + screen.height);
+      setText("availableScreenSize", screen.availWidth + " × " + screen.availHeight);
+      setText("windowSize", window.innerWidth + " × " + window.innerHeight);
+      setText("colorDepth", screen.colorDepth + " bits");
+      setText("pixelDepth", screen.pixelDepth + " bits");
+      setText("devicePixelRatio", window.devicePixelRatio);
+
+      if ("maxTouchPoints" in navigator && navigator.maxTouchPoints > 0) {
+        setText("touchSupport", "Yes, " + navigator.maxTouchPoints + " touch point(s)");
+      } else {
+        setText("touchSupport", "No");
+      }
 
       setText("localTime", new Date().toString());
-      setText("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone || "Unavailable");
-      setText("timezoneOffset", `${new Date().getTimezoneOffset()} minutes from UTC`);
 
-      setText("cpu", navigator.hardwareConcurrency || "Unavailable");
-      setText("memory", navigator.deviceMemory ? `${navigator.deviceMemory} GB approx.` : "Unavailable");
+      try {
+        setText("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+      } catch (error) {
+        setText("timezone", "Unavailable");
+      }
+
+      setText("timezoneOffset", new Date().getTimezoneOffset() + " minutes from UTC");
+      setText("cpuThreads", navigator.hardwareConcurrency || "Unavailable");
+
+      if ("deviceMemory" in navigator) {
+        setText("deviceMemory", navigator.deviceMemory + " GB approx.");
+      } else {
+        setText("deviceMemory", "Unavailable");
+      }
 
       setText("localStorageSupport", storageAvailable("localStorage"));
       setText("sessionStorageSupport", storageAvailable("sessionStorage"));
@@ -295,19 +349,75 @@
       setText("webglSupport", checkWebGL());
     }
 
-    function collectNetworkInfo() {
-      const connection =
-        navigator.connection ||
-        navigator.mozConnection ||
-        navigator.webkitConnection;
+    function collectIPInfo() {
+      fetch("https://ipapi.co/json/")
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error("IP lookup failed");
+          }
 
-      if (!connection) return;
+          return response.json();
+        })
+        .then(function(data) {
+          setText("ip", data.ip);
+          setText("city", data.city);
+          setText("region", data.region);
+          setText("country", data.country_name);
+          setText("postal", data.postal);
+          setText("ipLatitude", data.latitude);
+          setText("ipLongitude", data.longitude);
+          setText("isp", data.org);
+          setText("asn", data.asn);
+          setText("currency", data.currency);
+          setText("callingCode", data.country_calling_code);
+        })
+        .catch(function() {
+          setText("ip", "Could not load");
+          setText("city", "Could not load");
+          setText("region", "Could not load");
+          setText("country", "Could not load");
+          setText("postal", "Could not load");
+          setText("ipLatitude", "Could not load");
+          setText("ipLongitude", "Could not load");
+          setText("isp", "Could not load");
+          setText("asn", "Could not load");
+          setText("currency", "Could not load");
+          setText("callingCode", "Could not load");
+        });
+    }
+
+    function collectNetworkInfo() {
+      const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+      if (!connection) {
+        setText("connectionType", "Unavailable");
+        setText("effectiveConnection", "Unavailable");
+        setText("downlink", "Unavailable");
+        setText("rtt", "Unavailable");
+        setText("saveData", "Unavailable");
+        return;
+      }
 
       setText("connectionType", connection.type || "Unavailable");
-      setText("effectiveType", connection.effectiveType || "Unavailable");
-      setText("downlink", connection.downlink ? `${connection.downlink} Mbps` : "Unavailable");
-      setText("rtt", connection.rtt ? `${connection.rtt} ms` : "Unavailable");
-      setText("saveData", connection.saveData ? "Yes" : "No");
+      setText("effectiveConnection", connection.effectiveType || "Unavailable");
+
+      if (connection.downlink !== undefined) {
+        setText("downlink", connection.downlink + " Mbps");
+      } else {
+        setText("downlink", "Unavailable");
+      }
+
+      if (connection.rtt !== undefined) {
+        setText("rtt", connection.rtt + " ms");
+      } else {
+        setText("rtt", "Unavailable");
+      }
+
+      if (connection.saveData !== undefined) {
+        setText("saveData", connection.saveData ? "Yes" : "No");
+      } else {
+        setText("saveData", "Unavailable");
+      }
     }
 
     function collectBatteryInfo() {
@@ -318,11 +428,11 @@
       }
 
       navigator.getBattery()
-        .then(battery => {
-          setText("batteryLevel", `${Math.round(battery.level * 100)}%`);
+        .then(function(battery) {
+          setText("batteryLevel", Math.round(battery.level * 100) + "%");
           setText("batteryCharging", battery.charging ? "Yes" : "No");
         })
-        .catch(() => {
+        .catch(function() {
           setText("batteryLevel", "Unavailable");
           setText("batteryCharging", "Unavailable");
         });
@@ -336,44 +446,13 @@
       }
 
       navigator.storage.estimate()
-        .then(estimate => {
+        .then(function(estimate) {
           setText("storageQuota", formatBytes(estimate.quota));
           setText("storageUsed", formatBytes(estimate.usage));
         })
-        .catch(() => {
+        .catch(function() {
           setText("storageQuota", "Unavailable");
           setText("storageUsed", "Unavailable");
-        });
-    }
-
-    function collectIPInfo() {
-      fetch("https://ipapi.co/json/")
-        .then(response => response.json())
-        .then(data => {
-          setText("ip", data.ip || "Unavailable");
-          setText("city", data.city || "Unavailable");
-          setText("region", data.region || "Unavailable");
-          setText("country", data.country_name || "Unavailable");
-          setText("postal", data.postal || "Unavailable");
-          setText("ipLat", data.latitude || "Unavailable");
-          setText("ipLon", data.longitude || "Unavailable");
-          setText("isp", data.org || "Unavailable");
-          setText("asn", data.asn || "Unavailable");
-          setText("currency", data.currency || "Unavailable");
-          setText("callingCode", data.country_calling_code || "Unavailable");
-        })
-        .catch(() => {
-          setText("ip", "Could not load");
-          setText("city", "Could not load");
-          setText("region", "Could not load");
-          setText("country", "Could not load");
-          setText("postal", "Could not load");
-          setText("ipLat", "Could not load");
-          setText("ipLon", "Could not load");
-          setText("isp", "Could not load");
-          setText("asn", "Could not load");
-          setText("currency", "Could not load");
-          setText("callingCode", "Could not load");
         });
     }
 
@@ -383,15 +462,19 @@
         return;
       }
 
+      setText("gpsLatitude", "Requesting permission...");
+      setText("gpsLongitude", "Requesting permission...");
+      setText("gpsAccuracy", "Requesting permission...");
+
       navigator.geolocation.getCurrentPosition(
-        position => {
-          setText("gpsLat", position.coords.latitude);
-          setText("gpsLon", position.coords.longitude);
-          setText("gpsAccuracy", `${position.coords.accuracy} meters`);
+        function(position) {
+          setText("gpsLatitude", position.coords.latitude);
+          setText("gpsLongitude", position.coords.longitude);
+          setText("gpsAccuracy", position.coords.accuracy + " meters");
         },
-        error => {
-          setText("gpsLat", "Permission denied or unavailable");
-          setText("gpsLon", "Permission denied or unavailable");
+        function() {
+          setText("gpsLatitude", "Permission denied or unavailable");
+          setText("gpsLongitude", "Permission denied or unavailable");
           setText("gpsAccuracy", "Permission denied or unavailable");
         },
         {
@@ -403,34 +486,58 @@
     }
 
     function copyInfo() {
-      const text = document.getElementById("rawInfo").textContent;
+      const rawInfo = document.getElementById("rawInfo").textContent;
 
-      navigator.clipboard.writeText(text)
-        .then(() => {
+      if (!navigator.clipboard) {
+        alert("Clipboard API is not supported in this browser.");
+        return;
+      }
+
+      navigator.clipboard.writeText(rawInfo)
+        .then(function() {
           alert("Information copied to clipboard.");
         })
-        .catch(() => {
+        .catch(function() {
           alert("Could not copy information.");
         });
     }
 
+    function downloadInfo() {
+      const data = JSON.stringify(collectedInfo, null, 2);
+      const blob = new Blob([data], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "visitor-info.json";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+    }
+
     collectBasicInfo();
+    collectIPInfo();
     collectNetworkInfo();
     collectBatteryInfo();
     collectStorageEstimate();
-    collectIPInfo();
 
-    window.addEventListener("resize", () => {
-      setText("windowSize", `${window.innerWidth} × ${window.innerHeight}`);
+    window.addEventListener("resize", function() {
+      setText("windowSize", window.innerWidth + " × " + window.innerHeight);
     });
 
-    window.addEventListener("online", () => {
+    window.addEventListener("online", function() {
       setText("online", "Yes");
     });
 
-    window.addEventListener("offline", () => {
+    window.addEventListener("offline", function() {
       setText("online", "No");
     });
+
+    setInterval(function() {
+      setText("localTime", new Date().toString());
+    }, 1000);
   </script>
 </body>
 </html>
