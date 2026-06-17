@@ -2,26 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Visitor Info</title>
+  <title>Visitor Information</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 800px;
+      max-width: 950px;
       margin: 40px auto;
       padding: 20px;
       line-height: 1.6;
       background: #f5f5f5;
+      color: #222;
     }
 
     .box {
       background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
     }
 
     h1 {
       margin-top: 0;
+    }
+
+    h2 {
+      margin-top: 30px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 6px;
     }
 
     .item {
@@ -32,11 +39,32 @@
       font-weight: bold;
     }
 
+    button {
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background: #222;
+      color: white;
+    }
+
+    button:hover {
+      background: #444;
+    }
+
     .warning {
-      margin-top: 20px;
-      padding: 10px;
+      margin-top: 25px;
+      padding: 12px;
       background: #fff3cd;
       border-left: 4px solid #ffc107;
+    }
+
+    pre {
+      background: #eee;
+      padding: 12px;
+      overflow-x: auto;
+      border-radius: 6px;
     }
   </style>
 </head>
@@ -44,110 +72,365 @@
   <div class="box">
     <h1>Your Visitor Information</h1>
 
-    <div class="item">
-      <span class="label">Public IP:</span>
-      <span id="ip">Loading...</span>
-    </div>
-
-    <div class="item">
-      <span class="label">City:</span>
-      <span id="city">Loading...</span>
-    </div>
-
-    <div class="item">
-      <span class="label">Region:</span>
-      <span id="region">Loading...</span>
-    </div>
-
-    <div class="item">
-      <span class="label">Country:</span>
-      <span id="country">Loading...</span>
-    </div>
-
-    <div class="item">
-      <span class="label">Internet Provider:</span>
-      <span id="isp">Loading...</span>
-    </div>
-
-    <div class="item">
-      <span class="label">Browser:</span>
-      <span id="browser"></span>
-    </div>
-
-    <div class="item">
-      <span class="label">Operating System:</span>
-      <span id="os"></span>
-    </div>
-
-    <div class="item">
-      <span class="label">Screen Size:</span>
-      <span id="screen"></span>
-    </div>
-
-    <div class="item">
-      <span class="label">Language:</span>
-      <span id="language"></span>
-    </div>
-
-    <div class="item">
-      <span class="label">Timezone:</span>
-      <span id="timezone"></span>
-    </div>
-
     <div class="warning">
-      This page only displays information that your browser or public IP address already exposes to websites. It does not hack, steal, or bypass permissions.
+      This page displays information that your browser or public IP address normally exposes to websites.
+      It does not access private files, passwords, camera, microphone, or exact GPS location unless you give permission.
     </div>
+
+    <h2>IP and Approximate Location</h2>
+
+    <div class="item"><span class="label">Public IP:</span> <span id="ip">Loading...</span></div>
+    <div class="item"><span class="label">City:</span> <span id="city">Loading...</span></div>
+    <div class="item"><span class="label">Region:</span> <span id="region">Loading...</span></div>
+    <div class="item"><span class="label">Country:</span> <span id="country">Loading...</span></div>
+    <div class="item"><span class="label">Postal Code:</span> <span id="postal">Loading...</span></div>
+    <div class="item"><span class="label">Latitude from IP:</span> <span id="ipLat">Loading...</span></div>
+    <div class="item"><span class="label">Longitude from IP:</span> <span id="ipLon">Loading...</span></div>
+    <div class="item"><span class="label">Internet Provider / Organization:</span> <span id="isp">Loading...</span></div>
+    <div class="item"><span class="label">ASN:</span> <span id="asn">Loading...</span></div>
+    <div class="item"><span class="label">Currency:</span> <span id="currency">Loading...</span></div>
+    <div class="item"><span class="label">Calling Code:</span> <span id="callingCode">Loading...</span></div>
+
+    <h2>Browser and Device</h2>
+
+    <div class="item"><span class="label">Browser:</span> <span id="browser"></span></div>
+    <div class="item"><span class="label">Operating System:</span> <span id="os"></span></div>
+    <div class="item"><span class="label">Device Type:</span> <span id="deviceType"></span></div>
+    <div class="item"><span class="label">User Agent:</span> <span id="userAgent"></span></div>
+    <div class="item"><span class="label">Platform:</span> <span id="platform"></span></div>
+    <div class="item"><span class="label">Browser Language:</span> <span id="language"></span></div>
+    <div class="item"><span class="label">All Languages:</span> <span id="languages"></span></div>
+    <div class="item"><span class="label">Cookies Enabled:</span> <span id="cookies"></span></div>
+    <div class="item"><span class="label">Java Enabled:</span> <span id="java"></span></div>
+    <div class="item"><span class="label">Do Not Track:</span> <span id="dnt"></span></div>
+    <div class="item"><span class="label">Online:</span> <span id="online"></span></div>
+
+    <h2>Screen and Display</h2>
+
+    <div class="item"><span class="label">Screen Size:</span> <span id="screen"></span></div>
+    <div class="item"><span class="label">Available Screen Size:</span> <span id="availableScreen"></span></div>
+    <div class="item"><span class="label">Browser Window Size:</span> <span id="windowSize"></span></div>
+    <div class="item"><span class="label">Color Depth:</span> <span id="colorDepth"></span></div>
+    <div class="item"><span class="label">Pixel Depth:</span> <span id="pixelDepth"></span></div>
+    <div class="item"><span class="label">Device Pixel Ratio:</span> <span id="pixelRatio"></span></div>
+    <div class="item"><span class="label">Touch Support:</span> <span id="touch"></span></div>
+
+    <h2>Time and Locale</h2>
+
+    <div class="item"><span class="label">Local Time:</span> <span id="localTime"></span></div>
+    <div class="item"><span class="label">Timezone:</span> <span id="timezone"></span></div>
+    <div class="item"><span class="label">Timezone Offset:</span> <span id="timezoneOffset"></span></div>
+
+    <h2>Hardware and Performance</h2>
+
+    <div class="item"><span class="label">CPU Threads:</span> <span id="cpu"></span></div>
+    <div class="item"><span class="label">Device Memory:</span> <span id="memory"></span></div>
+    <div class="item"><span class="label">Battery Level:</span> <span id="batteryLevel">Unavailable</span></div>
+    <div class="item"><span class="label">Battery Charging:</span> <span id="batteryCharging">Unavailable</span></div>
+
+    <h2>Network</h2>
+
+    <div class="item"><span class="label">Connection Type:</span> <span id="connectionType">Unavailable</span></div>
+    <div class="item"><span class="label">Effective Connection:</span> <span id="effectiveType">Unavailable</span></div>
+    <div class="item"><span class="label">Downlink:</span> <span id="downlink">Unavailable</span></div>
+    <div class="item"><span class="label">Round Trip Time:</span> <span id="rtt">Unavailable</span></div>
+    <div class="item"><span class="label">Save Data Enabled:</span> <span id="saveData">Unavailable</span></div>
+
+    <h2>Storage and Browser Capabilities</h2>
+
+    <div class="item"><span class="label">Local Storage:</span> <span id="localStorageSupport"></span></div>
+    <div class="item"><span class="label">Session Storage:</span> <span id="sessionStorageSupport"></span></div>
+    <div class="item"><span class="label">IndexedDB:</span> <span id="indexedDBSupport"></span></div>
+    <div class="item"><span class="label">Service Worker:</span> <span id="serviceWorkerSupport"></span></div>
+    <div class="item"><span class="label">WebGL:</span> <span id="webglSupport"></span></div>
+    <div class="item"><span class="label">Storage Quota:</span> <span id="storageQuota">Unavailable</span></div>
+    <div class="item"><span class="label">Storage Used:</span> <span id="storageUsed">Unavailable</span></div>
+
+    <h2>Optional GPS Location</h2>
+
+    <p>
+      Exact GPS location requires browser permission. The visitor must click the button and accept the permission request.
+    </p>
+
+    <button onclick="getGPSLocation()">Show My GPS Location</button>
+
+    <div class="item"><span class="label">GPS Latitude:</span> <span id="gpsLat">Not requested</span></div>
+    <div class="item"><span class="label">GPS Longitude:</span> <span id="gpsLon">Not requested</span></div>
+    <div class="item"><span class="label">GPS Accuracy:</span> <span id="gpsAccuracy">Not requested</span></div>
+
+    <h2>Raw Summary</h2>
+
+    <button onclick="copyInfo()">Copy All Information</button>
+    <pre id="rawInfo">Loading...</pre>
   </div>
 
   <script>
-    function detectBrowser() {
-      const userAgent = navigator.userAgent;
+    const collectedInfo = {};
 
-      if (userAgent.includes("Firefox")) return "Firefox";
-      if (userAgent.includes("Edg")) return "Microsoft Edge";
-      if (userAgent.includes("Chrome")) return "Chrome";
-      if (userAgent.includes("Safari")) return "Safari";
-      if (userAgent.includes("Opera") || userAgent.includes("OPR")) return "Opera";
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value;
+      }
+      collectedInfo[id] = value;
+      updateRawInfo();
+    }
+
+    function updateRawInfo() {
+      document.getElementById("rawInfo").textContent =
+        JSON.stringify(collectedInfo, null, 2);
+    }
+
+    function detectBrowser() {
+      const ua = navigator.userAgent;
+
+      if (ua.includes("Firefox")) return "Firefox";
+      if (ua.includes("Edg")) return "Microsoft Edge";
+      if (ua.includes("OPR") || ua.includes("Opera")) return "Opera";
+      if (ua.includes("Chrome")) return "Chrome";
+      if (ua.includes("Safari")) return "Safari";
 
       return "Unknown browser";
     }
 
     function detectOS() {
+      const ua = navigator.userAgent.toLowerCase();
       const platform = navigator.platform.toLowerCase();
-      const userAgent = navigator.userAgent.toLowerCase();
 
+      if (ua.includes("android")) return "Android";
+      if (ua.includes("iphone") || ua.includes("ipad") || ua.includes("ipod")) return "iOS";
       if (platform.includes("win")) return "Windows";
       if (platform.includes("mac")) return "macOS";
       if (platform.includes("linux")) return "Linux";
-      if (userAgent.includes("android")) return "Android";
-      if (userAgent.includes("iphone") || userAgent.includes("ipad")) return "iOS";
 
       return "Unknown operating system";
     }
 
-    document.getElementById("browser").textContent = detectBrowser();
-    document.getElementById("os").textContent = detectOS();
-    document.getElementById("screen").textContent = `${screen.width} × ${screen.height}`;
-    document.getElementById("language").textContent = navigator.language;
-    document.getElementById("timezone").textContent =
-      Intl.DateTimeFormat().resolvedOptions().timeZone;
+    function detectDeviceType() {
+      const ua = navigator.userAgent.toLowerCase();
 
-    fetch("https://ipapi.co/json/")
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById("ip").textContent = data.ip || "Unavailable";
-        document.getElementById("city").textContent = data.city || "Unavailable";
-        document.getElementById("region").textContent = data.region || "Unavailable";
-        document.getElementById("country").textContent = data.country_name || "Unavailable";
-        document.getElementById("isp").textContent = data.org || "Unavailable";
-      })
-      .catch(error => {
-        document.getElementById("ip").textContent = "Could not load";
-        document.getElementById("city").textContent = "Could not load";
-        document.getElementById("region").textContent = "Could not load";
-        document.getElementById("country").textContent = "Could not load";
-        document.getElementById("isp").textContent = "Could not load";
-      });
+      if (/tablet|ipad/.test(ua)) return "Tablet";
+      if (/mobile|iphone|android/.test(ua)) return "Phone";
+      return "Desktop or laptop";
+    }
+
+    function storageAvailable(type) {
+      try {
+        const storage = window[type];
+        const testKey = "__storage_test__";
+        storage.setItem(testKey, testKey);
+        storage.removeItem(testKey);
+        return "Available";
+      } catch (e) {
+        return "Unavailable";
+      }
+    }
+
+    function checkWebGL() {
+      try {
+        const canvas = document.createElement("canvas");
+        const gl =
+          canvas.getContext("webgl") ||
+          canvas.getContext("experimental-webgl");
+
+        return gl ? "Supported" : "Not supported";
+      } catch (e) {
+        return "Not supported";
+      }
+    }
+
+    function formatBytes(bytes) {
+      if (!Number.isFinite(bytes)) return "Unavailable";
+
+      const units = ["bytes", "KB", "MB", "GB", "TB"];
+      let size = bytes;
+      let unitIndex = 0;
+
+      while (size >= 1024 && unitIndex < units.length - 1) {
+        size /= 1024;
+        unitIndex++;
+      }
+
+      return `${size.toFixed(2)} ${units[unitIndex]}`;
+    }
+
+    function collectBasicInfo() {
+      setText("browser", detectBrowser());
+      setText("os", detectOS());
+      setText("deviceType", detectDeviceType());
+      setText("userAgent", navigator.userAgent);
+      setText("platform", navigator.platform || "Unavailable");
+      setText("language", navigator.language || "Unavailable");
+      setText("languages", navigator.languages ? navigator.languages.join(", ") : "Unavailable");
+      setText("cookies", navigator.cookieEnabled ? "Yes" : "No");
+
+      if (typeof navigator.javaEnabled === "function") {
+        setText("java", navigator.javaEnabled() ? "Yes" : "No");
+      } else {
+        setText("java", "Unavailable");
+      }
+
+      setText("dnt", navigator.doNotTrack || window.doNotTrack || "Unavailable");
+      setText("online", navigator.onLine ? "Yes" : "No");
+
+      setText("screen", `${screen.width} × ${screen.height}`);
+      setText("availableScreen", `${screen.availWidth} × ${screen.availHeight}`);
+      setText("windowSize", `${window.innerWidth} × ${window.innerHeight}`);
+      setText("colorDepth", `${screen.colorDepth} bits`);
+      setText("pixelDepth", `${screen.pixelDepth} bits`);
+      setText("pixelRatio", window.devicePixelRatio || "Unavailable");
+      setText("touch", navigator.maxTouchPoints > 0 ? `Yes, ${navigator.maxTouchPoints} touch points` : "No");
+
+      setText("localTime", new Date().toString());
+      setText("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone || "Unavailable");
+      setText("timezoneOffset", `${new Date().getTimezoneOffset()} minutes from UTC`);
+
+      setText("cpu", navigator.hardwareConcurrency || "Unavailable");
+      setText("memory", navigator.deviceMemory ? `${navigator.deviceMemory} GB approx.` : "Unavailable");
+
+      setText("localStorageSupport", storageAvailable("localStorage"));
+      setText("sessionStorageSupport", storageAvailable("sessionStorage"));
+      setText("indexedDBSupport", "indexedDB" in window ? "Supported" : "Not supported");
+      setText("serviceWorkerSupport", "serviceWorker" in navigator ? "Supported" : "Not supported");
+      setText("webglSupport", checkWebGL());
+    }
+
+    function collectNetworkInfo() {
+      const connection =
+        navigator.connection ||
+        navigator.mozConnection ||
+        navigator.webkitConnection;
+
+      if (!connection) return;
+
+      setText("connectionType", connection.type || "Unavailable");
+      setText("effectiveType", connection.effectiveType || "Unavailable");
+      setText("downlink", connection.downlink ? `${connection.downlink} Mbps` : "Unavailable");
+      setText("rtt", connection.rtt ? `${connection.rtt} ms` : "Unavailable");
+      setText("saveData", connection.saveData ? "Yes" : "No");
+    }
+
+    function collectBatteryInfo() {
+      if (!navigator.getBattery) {
+        setText("batteryLevel", "Unavailable");
+        setText("batteryCharging", "Unavailable");
+        return;
+      }
+
+      navigator.getBattery()
+        .then(battery => {
+          setText("batteryLevel", `${Math.round(battery.level * 100)}%`);
+          setText("batteryCharging", battery.charging ? "Yes" : "No");
+        })
+        .catch(() => {
+          setText("batteryLevel", "Unavailable");
+          setText("batteryCharging", "Unavailable");
+        });
+    }
+
+    function collectStorageEstimate() {
+      if (!navigator.storage || !navigator.storage.estimate) {
+        setText("storageQuota", "Unavailable");
+        setText("storageUsed", "Unavailable");
+        return;
+      }
+
+      navigator.storage.estimate()
+        .then(estimate => {
+          setText("storageQuota", formatBytes(estimate.quota));
+          setText("storageUsed", formatBytes(estimate.usage));
+        })
+        .catch(() => {
+          setText("storageQuota", "Unavailable");
+          setText("storageUsed", "Unavailable");
+        });
+    }
+
+    function collectIPInfo() {
+      fetch("https://ipapi.co/json/")
+        .then(response => response.json())
+        .then(data => {
+          setText("ip", data.ip || "Unavailable");
+          setText("city", data.city || "Unavailable");
+          setText("region", data.region || "Unavailable");
+          setText("country", data.country_name || "Unavailable");
+          setText("postal", data.postal || "Unavailable");
+          setText("ipLat", data.latitude || "Unavailable");
+          setText("ipLon", data.longitude || "Unavailable");
+          setText("isp", data.org || "Unavailable");
+          setText("asn", data.asn || "Unavailable");
+          setText("currency", data.currency || "Unavailable");
+          setText("callingCode", data.country_calling_code || "Unavailable");
+        })
+        .catch(() => {
+          setText("ip", "Could not load");
+          setText("city", "Could not load");
+          setText("region", "Could not load");
+          setText("country", "Could not load");
+          setText("postal", "Could not load");
+          setText("ipLat", "Could not load");
+          setText("ipLon", "Could not load");
+          setText("isp", "Could not load");
+          setText("asn", "Could not load");
+          setText("currency", "Could not load");
+          setText("callingCode", "Could not load");
+        });
+    }
+
+    function getGPSLocation() {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by this browser.");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setText("gpsLat", position.coords.latitude);
+          setText("gpsLon", position.coords.longitude);
+          setText("gpsAccuracy", `${position.coords.accuracy} meters`);
+        },
+        error => {
+          setText("gpsLat", "Permission denied or unavailable");
+          setText("gpsLon", "Permission denied or unavailable");
+          setText("gpsAccuracy", "Permission denied or unavailable");
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+    }
+
+    function copyInfo() {
+      const text = document.getElementById("rawInfo").textContent;
+
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          alert("Information copied to clipboard.");
+        })
+        .catch(() => {
+          alert("Could not copy information.");
+        });
+    }
+
+    collectBasicInfo();
+    collectNetworkInfo();
+    collectBatteryInfo();
+    collectStorageEstimate();
+    collectIPInfo();
+
+    window.addEventListener("resize", () => {
+      setText("windowSize", `${window.innerWidth} × ${window.innerHeight}`);
+    });
+
+    window.addEventListener("online", () => {
+      setText("online", "Yes");
+    });
+
+    window.addEventListener("offline", () => {
+      setText("online", "No");
+    });
   </script>
 </body>
 </html>
